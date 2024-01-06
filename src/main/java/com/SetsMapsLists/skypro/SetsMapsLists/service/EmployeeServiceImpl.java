@@ -5,10 +5,7 @@ import com.SetsMapsLists.skypro.SetsMapsLists.exception.EmployeeNotFoundExceptio
 import com.SetsMapsLists.skypro.SetsMapsLists.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -20,8 +17,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee add(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee add(String firstName, String lastName, int department, int salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             System.out.println(employeeList.contains(employee));
             throw new EmployeeAreadyAddedException();
@@ -32,8 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee remove(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee remove(String firstName, String lastName, int department, int salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             employeeList.remove(employee);
             return employee;
@@ -42,12 +39,30 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee find(String firstName, String lastName, int department, int salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             return employee;
         }
         throw new EmployeeNotFoundException();
+    }
+
+    @Override
+    public int maxSalaryPerDepartment(int department) {
+        return employeeList.stream()
+                .filter(e -> e.getDepartment() == department)
+                .map(Employee::getSalary)
+                .max(Comparator.comparingInt(e -> e.intValue()))
+                .get();
+    }
+
+    @Override
+    public int minSalaryPerDepartment(int department) {
+        return employeeList.stream()
+                .filter(e -> e.getDepartment() == department)
+                .map(Employee::getSalary)
+                .min(Comparator.comparingInt(e -> e.intValue()))
+                .get();
     }
 
     @Override
