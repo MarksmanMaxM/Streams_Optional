@@ -2,7 +2,9 @@ package com.SetsMapsLists.skypro.SetsMapsLists.service;
 
 import com.SetsMapsLists.skypro.SetsMapsLists.exception.EmployeeAreadyAddedException;
 import com.SetsMapsLists.skypro.SetsMapsLists.exception.EmployeeNotFoundException;
+import com.SetsMapsLists.skypro.SetsMapsLists.exception.InvalidException;
 import com.SetsMapsLists.skypro.SetsMapsLists.model.Employee;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,6 +20,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee add(String firstName, String lastName, int department, int salary) {
+        if (!checkFio(firstName, lastName)) {
+            throw new InvalidException();
+        }
         Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             System.out.println(employeeList.contains(employee));
@@ -30,6 +35,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee remove(String firstName, String lastName, int department, int salary) {
+        if (!checkFio(firstName, lastName)) {
+            throw new InvalidException();
+        }
         Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             employeeList.remove(employee);
@@ -40,6 +48,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String firstName, String lastName, int department, int salary) {
+        if (!checkFio(firstName, lastName)) {
+            throw new InvalidException();
+        }
         Employee employee = new Employee(firstName, lastName, department, salary);
         if (employeeList.contains(employee)) {
             return employee;
@@ -68,6 +79,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Collection<Employee> findAll() {
         return Collections.unmodifiableList(employeeList); //Чтобы не могли поменять. Эта копия будет неизменяемая. Можно ещё return new ArrayList<>(employeeList); - передача копии
+
+    }
+
+    private boolean checkFio(String firstname, String lastname) {
+        return StringUtils.isAlpha(firstname) && StringUtils.isAlpha(lastname);
+
 
     }
 }
