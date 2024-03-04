@@ -49,30 +49,6 @@ public class EmployeeController {
         return service.findAll();
     }
 
-    @GetMapping("/departments/max-salary")
-    public String maxSalaryPerDepartment(@RequestParam("dep") int dep) {
-        return String.valueOf(service.maxSalaryPerDepartment(dep));
 
-    }
-
-    @GetMapping("/departments/min-salary")
-    public String minSalaryPerDepartment(@RequestParam("dep") int dep) {
-        return String.valueOf(service.minSalaryPerDepartment(dep));
-
-    }
-
-    @GetMapping("/departments/all")
-    public Collection<Employee> findAllDepartment() {
-        return service.findAll().stream()
-                .sorted(Comparator.comparingInt(Employee::getDepartment))
-                .toList();
-    }
-
-    @GetMapping("/departments/dep")
-    public Collection<Employee> findAllPerDepartment(@RequestParam("dep") int dep) {
-        return service.findAll().stream()
-                .filter(e -> e.getDepartment() == dep)
-                .toList();
-    }
 
 }
