@@ -11,7 +11,6 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
     private final List<Employee> employeeList;
 
     public EmployeeServiceImpl() {
@@ -81,10 +80,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.unmodifiableList(employeeList); //Чтобы не могли поменять. Эта копия будет неизменяемая. Можно ещё return new ArrayList<>(employeeList); - передача копии
 
     }
-
-    private boolean checkFio(String firstname, String lastname) {
+    @Override
+    public boolean checkFio(String firstname, String lastname) {
         return StringUtils.isAlpha(firstname) && StringUtils.isAlpha(lastname);
 
 
+    }
+    @Override
+    public int size() {
+        return employeeList.size();
     }
 }
